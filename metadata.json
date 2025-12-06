@@ -1,0 +1,5 @@
+{
+  "name": "ReportRemix - Word Edition",
+  "description": "An AI-powered Word document workspace. Upload .docx files, edit content with Gemini AI, and export clean documents.",
+  "requestFramePermissions": []
+}

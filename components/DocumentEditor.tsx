@@ -522,17 +522,19 @@ export const DocumentEditor: React.FC<DocumentEditorProps> = ({ htmlContent, onC
     }
   };
 
+  const [zoom, setZoom] = useState(100);
+
   return (
     <div className="flex flex-col h-full relative">
-        {/* Helper Banner */}
-        <div className="bg-gray-50 border-b border-gray-200 px-4 py-2 text-xs text-gray-700 fixed top-16 right-0 left-[400px] z-30">
-          <strong>💡 Tip:</strong> Select text to format, or set style before typing new text.
+        {/* Helper Banner - Hidden on mobile */}
+        <div className="hidden lg:block bg-gray-50 border-b border-gray-200 px-4 py-2 text-xs text-gray-700 fixed top-16 right-0 md:left-[400px] left-0 z-30">
+          <strong>💡 Tip:</strong> Select text to format, or set style before typing new text. Use Ctrl+Scroll to zoom.
         </div>
         
-        {/* Formatting Toolbar - Fixed at top */}
-        <div className="bg-white border-b border-gray-200 shadow-sm fixed top-[88px] right-0 left-[400px] z-20 shrink-0">
+        {/* Formatting Toolbar - Fixed at top, scrollable on mobile */}
+        <div className="bg-white border-b border-gray-200 shadow-sm fixed lg:top-[88px] top-16 right-0 md:left-[400px] left-0 z-20 shrink-0 overflow-x-auto">
             {/* First Row - Font and Size */}
-            <div className="h-10 flex items-center px-4 gap-2 border-b border-stone-100">
+            <div className="h-10 flex items-center px-2 md:px-4 gap-1 md:gap-2 border-b border-stone-100 min-w-max">
                 <select 
                     value={selectedFont}
                     onMouseDown={(e) => {
@@ -712,7 +714,7 @@ export const DocumentEditor: React.FC<DocumentEditorProps> = ({ htmlContent, onC
             </div>
 
             {/* Second Row - Formatting */}
-            <div className="h-10 flex items-center px-4 gap-2">
+            <div className="h-10 flex items-center px-2 md:px-4 gap-1 md:gap-2 min-w-max">
                 <div className="flex items-center gap-1 pr-3 border-r border-stone-200">
                     <ToolbarButton icon={<Heading1 size={18}/>} onClick={() => execCmd('formatBlock', 'H1')} title="Heading 1" />
                     <ToolbarButton icon={<Heading2 size={18}/>} onClick={() => execCmd('formatBlock', 'H2')} title="Heading 2" />
@@ -757,24 +759,44 @@ export const DocumentEditor: React.FC<DocumentEditorProps> = ({ htmlContent, onC
                  {isPaginating && (
                     <div className="ml-auto flex items-center gap-2 text-xs text-stone-400">
                         <RefreshCw className="w-3 h-3 animate-spin" />
-                        Reflowing...
+                        <span className="hidden md:inline">Reflowing...</span>
                     </div>
                 )}
             </div>
         </div>
 
-        {/* Editor Area - Scrollable with padding for fixed toolbar and banner */}
-        <div className="flex-1 overflow-y-auto bg-stone-200 p-8 flex justify-center" style={{ paddingTop: '150px' }}>
+        {/* Editor Area - Scrollable with padding for fixed toolbar and banner, with zoom support */}
+        <div 
+          className="flex-1 overflow-y-auto overflow-x-auto bg-stone-200 p-2 md:p-8 flex justify-center" 
+          style={{ 
+            paddingTop: window.innerWidth >= 1024 ? '150px' : '70px'
+          }}
+          onWheel={(e) => {
+            // Ctrl/Cmd + Scroll to zoom
+            if (e.ctrlKey || e.metaKey) {
+              e.preventDefault();
+              const delta = e.deltaY > 0 ? -10 : 10;
+              setZoom(prev => Math.max(25, Math.min(200, prev + delta)));
+            }
+          }}
+        >
+          <div 
+            style={{ 
+              transform: `scale(${zoom / 100})`,
+              transformOrigin: 'top center',
+              transition: 'transform 0.1s ease-out'
+            }}
+          >
             {/* Pages Container */}
             <div 
                 ref={editorRef} 
-                className="flex flex-col gap-8 pb-10" // Gap creates the visual separation between pages
+                className="flex flex-col gap-4 md:gap-8 pb-10" // Gap creates the visual separation between pages
             >
                 {pages.map((pageHtml, index) => (
                     <div key={index} className="relative group">
-                        {/* A4 Page */}
+                        {/* A4 Page - Responsive width on mobile */}
                         <div 
-                            className={`bg-white shadow-xl min-h-[297mm] w-[210mm] outline-none document-page ${showBorder ? 'has-page-border' : ''}`}
+                            className={`bg-white shadow-xl min-h-[297mm] w-full md:w-[210mm] max-w-[210mm] outline-none document-page ${showBorder ? 'has-page-border' : ''}`}
                             contentEditable
                             suppressContentEditableWarning
                             onInput={() => handleInput(index)}
@@ -922,6 +944,7 @@ export const DocumentEditor: React.FC<DocumentEditorProps> = ({ htmlContent, onC
                      </div>
                 )}
             </div>
+          </div>
         </div>
     </div>
   );

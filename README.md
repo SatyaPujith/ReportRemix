@@ -1,136 +1,204 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  <img width="1200" height="475" alt="ReportRemix Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  
+  <h1>✨ ReportRemix</h1>
+  <p><strong>AI-Powered Word Document Editor</strong></p>
+  <p>Edit Word documents with intelligent AI assistance, beautiful dark UI, and powerful formatting tools</p>
+
+  <p>
+    <img src="https://img.shields.io/badge/React-19.2.1-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React" />
+    <img src="https://img.shields.io/badge/TypeScript-5.8.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Vite-6.2.0-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/AI-Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
+  </p>
 </div>
 
-# ReportRemix - AI Word Editor
+---
 
-An AI-powered Word document editor with custom rich text editor and Gemini AI for intelligent document editing.
+## 🎯 Features
 
-## Features
+### 📝 **Rich Text Editor**
+- **19 Professional Fonts** - Arial, Calibri, Times New Roman, and more
+- **Font Sizes** - 8pt to 72pt with precise control
+- **Text Formatting** - Bold, italic, underline, strikethrough
+- **Colors** - Text color and highlight with 18+ preset colors
+- **Alignment** - Left, center, right, justify
+- **Lists** - Bullet points and numbered lists
+- **Headings** - H1, H2, and paragraph styles
+- **Page Breaks** - Insert manual page breaks
 
-- **Custom Rich Text Editor**: Built-in WYSIWYG editor with Word-like functionality
-  - Font family selection (19 fonts including Arial, Calibri, Times New Roman)
-  - Font size selection (8pt to 72pt)
-  - Text formatting (bold, italic, underline)
-  - Text and highlight colors with color picker
-  - Alignment (left, center, right, justify)
-  - Lists (bullet and numbered)
-  - Headings (H1, H2) and paragraphs
-  - Image resizing with drag handles
-  - Page break insertion
-  - No external dependencies or API keys required!
+### 🤖 **AI-Powered Editing**
+- **Smart Content Editing** - Ask AI to rewrite, format, or improve your document
+- **Intelligent Merge** - Handles partial AI responses gracefully
+- **Content Preservation** - Never lose your work with smart recovery
+- **Style Retention** - Maintains formatting during AI edits
+- **Image Protection** - Images stay intact during AI operations
 
-- **AI Document Editing**: Use Gemini AI to edit, rewrite, and format your documents
-  - Intelligent content preservation with smart merge algorithm
-  - Detects and handles partial AI responses
-  - Style and formatting retention
-  - Image protection during edits
-  - Handles large documents with automatic content recovery
+### 📄 **Document Management**
+- **Import** - Upload .docx files with full formatting preservation
+- **Export** - Download as Word (.docx) or PDF
+- **A4 Layout** - Professional multi-page view with proper margins
+- **Page Numbers** - Automatic page numbering
+- **Zoom** - Ctrl/Cmd + Scroll to zoom 25%-200%
 
-- **Word Document Import**: Upload .docx files with formatting preservation using Mammoth.js
-  - Fonts, colors, and styles maintained
-  - Tables and lists preserved
-  - Embedded images with base64 encoding
+### 🎨 **Modern Dark UI**
+- **Sleek Design** - Beautiful dark theme inspired by modern apps
+- **Responsive** - Works perfectly on desktop, tablet, and mobile
+- **Floating AI Button** - Quick access to AI assistant on mobile
+- **Smooth Animations** - Polished transitions and interactions
 
-- **Export Options**: 
-  - Export to Word (.docx) using html-docx-js
-  - Export to PDF using jsPDF
+---
 
-- **A4 Page Layout**: Professional multi-page document view with proper margins and page numbers
-
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- Gemini API key (free from [Google AI Studio](https://aistudio.google.com/app/apikey))
+- **Node.js** v16 or higher
+- **npm** or **yarn**
 
 ### Installation
 
-1. Clone the repository and install dependencies:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/reportremix.git
+   cd reportremix
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Set up your Gemini API key in `.env.local`:
-   ```
-   VITE_GEMINI_API_KEY=your_api_key_here
+3. **Configure environment**
+   
+   Create a `.env.local` file in the root directory:
+   ```env
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
    ```
 
-3. Run the development server:
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. Open http://localhost:3000 in your browser
+5. **Open in browser**
+   ```
+   http://localhost:5173
+   ```
 
-## Usage
+---
 
-### Basic Workflow
+## 📖 Usage Guide
 
-1. **Upload a Word Document**: Click or drag a .docx file to upload
-2. **Edit Manually**: 
-   - Select text first, then use the formatting toolbar
-   - Change fonts (19 options) and sizes (8pt-72pt)
-   - Apply colors using the color picker
-   - Use bold, italic, underline, and alignment buttons
-   - Insert lists, headings, and page breaks
-   - Double-click images to reset size
-3. **AI Editing**: Use the chat panel to ask AI to edit your document
-   - Example: "Make the title bold and centered"
-   - Example: "Add a summary paragraph at the beginning"
-   - Example: "Change all headings to blue color"
-   - Example: "Rewrite the introduction to be more formal"
-4. **Export**: Click Export to download as Word or PDF
+### Uploading Documents
+1. Drag and drop a `.docx` file onto the upload zone
+2. Or click to browse and select a file
+3. Wait for the document to parse and load
 
-### AI Editing Tips
+### Manual Editing
+1. **Select text** first before applying formatting
+2. Use the **toolbar** to change fonts, sizes, colors
+3. Apply **bold, italic, underline** with buttons or keyboard shortcuts
+4. Insert **lists, headings, and page breaks**
+5. **Double-click images** to reset their size
+6. **Ctrl/Cmd + Scroll** to zoom in/out
 
-**For Best Results:**
-- Be specific with your requests: "Make paragraph 2 bold" works better than "improve formatting"
-- Keep documents under 50KB for optimal AI performance
-- Use AI for content changes and specific formatting tasks
-- Use manual toolbar for bulk formatting on large documents
+### AI Editing
+1. Click the **AI button** (mobile) or use the **sidebar** (desktop)
+2. Type your request in natural language:
+   - *"Make the title bold and centered"*
+   - *"Rewrite the introduction to be more formal"*
+   - *"Change all headings to blue"*
+   - *"Add a summary at the beginning"*
+3. Press **Enter** to send
+4. AI will update your document automatically
 
-**AI Limitations:**
-- Large documents (>100KB) may be truncated due to AI token limits
-- The app includes smart merge to handle partial responses
-- For very large documents, consider editing in sections
+### Exporting
+1. Click the **Export** button in the header
+2. Choose **Word (.docx)** or **PDF**
+3. Enter a filename
+4. Click **Download**
 
-## Tech Stack
+---
 
-- **Frontend**: React + TypeScript + Vite
-- **Editor**: Custom ContentEditable-based editor with formatting toolbar
-- **AI**: Gemini AI API (gemini-2.0-flash-exp)
-- **DOCX Import**: Mammoth.js (CDN)
-- **DOCX Export**: html-docx-js (CDN)
-- **PDF Export**: jsPDF + html2canvas (CDN)
-- **Styling**: Tailwind CSS (CDN)
-- **Icons**: Lucide React
+## 🎨 Keyboard Shortcuts
 
-All document processing libraries loaded via CDN - minimal npm dependencies!
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + B` | Bold |
+| `Ctrl/Cmd + I` | Italic |
+| `Ctrl/Cmd + U` | Underline |
+| `Ctrl/Cmd + Scroll` | Zoom in/out |
+| `Enter` | Send AI message |
+| `Shift + Enter` | New line in chat |
 
-## Configuration
+---
 
-### Gemini API Key
+## 🛠️ Tech Stack
 
-Get a free API key from [Google AI Studio](https://aistudio.google.com/app/apikey) and add it to `.env.local`:
+### Frontend
+- **React 19** - Modern UI library
+- **TypeScript** - Type-safe development
+- **Vite** - Lightning-fast build tool
+- **Tailwind CSS** - Utility-first styling (CDN)
 
-```
-VITE_GEMINI_API_KEY=your_api_key_here
-```
+### Document Processing
+- **Mammoth.js** - DOCX import with formatting preservation
+- **html-docx-js** - DOCX export
+- **jsPDF** - PDF generation
+- **html2canvas** - HTML to canvas rendering
 
-**Free Tier Limits:**
-- 15 requests per minute
-- 1500 requests per day
-- 1,000,000 tokens per minute
+### AI Integration
+- **Gemini AI** - Advanced language model for document editing
+- **Smart Merge Algorithm** - Handles partial responses
+
+### Icons & UI
+- **Lucide React** - Beautiful icon library
+- **React Markdown** - Markdown rendering in chat
+
+---
+
+## 📱 Mobile Features
+
+### Responsive Design
+- **Floating AI Button** - Quick access to AI assistant
+- **Slide-in Chat Panel** - Full-screen chat overlay
+- **Touch-Friendly** - Optimized for touch interactions
+- **Horizontal Toolbar Scroll** - All tools accessible
+
+### Mobile Gestures
+- **Tap** floating button to open AI chat
+- **Tap overlay** to close chat
+- **Scroll** toolbar horizontally for more tools
+- **Pinch zoom** on document (browser native)
+
+---
+
+## 🔧 Configuration
 
 ### Environment Variables
 
-```bash
-# .env.local
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
+```env
+# Required: Gemini AI API Key
+VITE_GEMINI_API_KEY=your_api_key_here
 ```
 
-## Deployment
+### Customization
+
+**Fonts** - Edit `FONTS` array in `components/DocumentEditor.tsx`
+```typescript
+const FONTS = ['Arial', 'Calibri', 'Times New Roman', ...];
+```
+
+**Font Sizes** - Edit `FONT_SIZES` array
+```typescript
+const FONT_SIZES = ['8', '9', '10', '11', '12', ...];
+```
+
+**Colors** - Customize color palettes in the toolbar sections
+
+---
+
+## 🚢 Deployment
 
 ### Build for Production
 
@@ -140,95 +208,81 @@ npm run build
 
 Output will be in the `dist` directory.
 
-### Deploy to Vercel/Netlify
+### Deploy to Vercel
 
-1. Set environment variable: `VITE_GEMINI_API_KEY=your_key_here`
+1. Push your code to GitHub
+2. Import project in Vercel
+3. Add environment variable: `VITE_GEMINI_API_KEY`
+4. Deploy
+
+### Deploy to Netlify
+
+1. Connect your repository
 2. Build command: `npm run build`
-3. Output directory: `dist`
-
-## Features in Detail
-
-### Smart Merge Algorithm
-
-The app includes an intelligent merge system that handles partial AI responses:
-
-1. **Detects incomplete elements** - Checks if AI stopped mid-paragraph or mid-table
-2. **Removes incomplete content** - Discards partial elements
-3. **Replaces with complete original** - Uses the full element from original document
-4. **Continues with remaining content** - Appends all remaining elements
-
-This ensures you never lose content when AI hits token limits.
-
-### Document Import
-
-- Supports .docx files
-- Preserves fonts, colors, and basic formatting
-- Handles tables and lists
-- Embeds images as base64
-- Some complex formatting may be simplified
-
-### Export Options
-
-**Word Export (.docx):**
-- Preserves formatting and styles
-- Includes images
-- Compatible with Microsoft Word
-
-**PDF Export:**
-- A4 page layout
-- Multi-page support
-- High-quality rendering
-
-## Known Limitations
-
-### AI Editing
-- Large documents (>100KB) may be truncated due to AI model limits
-- Complex formatting changes work best on smaller documents
-- Use manual formatting for bulk changes on large documents
-
-### Document Import
-- Complex Word layouts may be simplified
-- Some table styling may not be preserved
-- Advanced Word features (track changes, comments) not supported
-
-### Editor Features
-- No real-time collaboration
-- No version history
-- No track changes or comments
-
-## Troubleshooting
-
-### AI Editing Not Working
-- Check that `VITE_GEMINI_API_KEY` is set in `.env.local`
-- Verify the key is valid at [Google AI Studio](https://aistudio.google.com/)
-- Check browser console for error messages
-- Ensure you haven't exceeded free tier limits
-
-### Formatting Not Applying
-- Make sure text is selected before applying formatting
-- Click inside the document to focus the editor
-- Try selecting text again and reapplying
-
-### Document Looks Different After Import
-- Some formatting loss is normal with DOCX conversion
-- Manually adjust formatting after import
-- Use AI to fix formatting: "Make tables have borders"
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-MIT License - feel free to use this project for personal or commercial purposes.
-
-## Support
-
-For issues or questions:
-- Check the browser console for error messages
-- Verify all environment variables are set correctly
-- Ensure you're using a modern browser (Chrome, Firefox, Edge)
+3. Publish directory: `dist`
+4. Add environment variable: `VITE_GEMINI_API_KEY`
 
 ---
 
-Built with ❤️ using 100% free and open-source tools
+## 🎯 Roadmap
+
+- [ ] Real-time collaboration
+- [ ] Version history
+- [ ] Comments and annotations
+- [ ] Track changes
+- [ ] More export formats (Markdown, HTML)
+- [ ] Custom templates
+- [ ] Cloud storage integration
+- [ ] Offline mode
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Mammoth.js** - For excellent DOCX parsing
+- **Gemini AI** - For powerful language model capabilities
+- **Lucide** - For beautiful icons
+- **Tailwind CSS** - For rapid UI development
+- **React Community** - For amazing tools and libraries
+
+---
+
+## 📧 Support
+
+Having issues? Found a bug? Have a feature request?
+
+- 📫 Open an issue on [GitHub Issues](https://github.com/yourusername/reportremix/issues)
+- 💬 Start a discussion on [GitHub Discussions](https://github.com/yourusername/reportremix/discussions)
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by developers, for developers</p>
+  <p>
+    <a href="#-features">Features</a> •
+    <a href="#-quick-start">Quick Start</a> •
+    <a href="#-usage-guide">Usage</a> •
+    <a href="#-tech-stack">Tech Stack</a> •
+    <a href="#-deployment">Deploy</a>
+  </p>
+  
+  <p>⭐ Star this repo if you find it useful!</p>
+</div>

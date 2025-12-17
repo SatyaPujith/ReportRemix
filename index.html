@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReportRemix - AI Word Editor</title>
+    <script>
+      // Suppress Tailwind CDN warning
+      window.process = { env: { NODE_ENV: 'production' } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Quill Editor (Free, No API Key) -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <!-- Custom Quill Styles -->
+    <style>
+      /* Quill editor container */
+      .ql-container {
+        font-family: Calibri, Arial, sans-serif;
+        font-size: 11pt;
+      }
+      
+      /* Custom fonts */
+      .ql-font-arial { font-family: Arial, sans-serif; }
+      .ql-font-calibri { font-family: Calibri, sans-serif; }
+      .ql-font-cambria { font-family: Cambria, serif; }
+      .ql-font-comic-sans { font-family: 'Comic Sans MS', cursive; }
+      .ql-font-courier-new { font-family: 'Courier New', monospace; }
+      .ql-font-georgia { font-family: Georgia, serif; }
+      .ql-font-helvetica { font-family: Helvetica, sans-serif; }
+      .ql-font-lucida { font-family: 'Lucida Sans Unicode', sans-serif; }
+      .ql-font-times-new-roman { font-family: 'Times New Roman', serif; }
+      .ql-font-trebuchet { font-family: 'Trebuchet MS', sans-serif; }
+      .ql-font-verdana { font-family: Verdana, sans-serif; }
+      
+      /* Toolbar font dropdown */
+      .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="arial"]::before,
+      .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before {
+        content: 'Arial';
+        font-family: Arial, sans-serif;
+      }
+      .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="calibri"]::before,
+      .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="calibri"]::before {
+        content: 'Calibri';
+        font-family: Calibri, sans-serif;
+      }
+      .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="cambria"]::before,
+      .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="cambria"]::before {
+        content: 'Cambria';
+        font-family: Cambria, serif;
+      }
+      .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times-new-roman"]::before,
+      .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before {
+        content: 'Times New Roman';
+        font-family: 'Times New Roman', serif;
+      }
+      
+      /* Word table styles */
+      .ql-editor table.word-table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .ql-editor table.word-table td,
+      .ql-editor table.word-table th {
+        border: 1px solid #000;
+        padding: 4pt 8pt;
+      }
+      
+      /* Image styles */
+      .ql-editor img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 10px auto;
+      }
+      
+      /* Preserve inline styles */
+      .ql-editor [style] {
+        /* Allow inline styles to work */
+      }
+    </style>
+    
+    <!-- DOCX Processing Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
+    
+    <!-- PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+    
+
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Lato', sans-serif; }
+      h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+      
+      /* Editor Styles - A4 Simulation */
+      .document-page {
+        font-family: 'Calibri', 'Arial', sans-serif; 
+        font-size: 11pt;
+        line-height: 1.5;
+        color: #000000;
+        background-color: white;
+        /* A4 Width */
+        width: 210mm; 
+        min-height: 297mm;
+        max-height: none;
+        overflow: visible;
+        /* Standard Print Margins */
+        padding: 25.4mm 25.4mm; /* 1 inch margins like Word default */
+        margin: 0 auto;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        position: relative;
+        box-sizing: border-box;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+      
+      /* First element usually has a margin that pushes it down, remove it for page top */
+      .document-page > *:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      
+      /* Also remove bottom margin from last element to prevent extra space */
+      .document-page > *:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+      }
+
+      /* Optional Page Border */
+      .document-page.has-page-border {
+        border: 1px solid #d6d3d1;
+      }
+      
+      /* Visual guide for text area */
+      .document-page.has-page-border::after {
+         content: "";
+         position: absolute;
+         top: 20mm; bottom: 20mm; left: 20mm; right: 20mm;
+         border: 1px dashed #e7e5e4;
+         pointer-events: none;
+         opacity: 0.5;
+         display: none; /* Hide unless debugging */
+      }
+
+      .document-page p { 
+        margin-bottom: 10pt; 
+        margin-top: 0; 
+        line-height: 1.5;
+      }
+      
+      /* Headings - Word-like styling */
+      .document-page h1 { 
+        font-size: 16pt; 
+        font-weight: bold; 
+        margin-bottom: 10pt; 
+        margin-top: 12pt; 
+        font-family: 'Calibri', 'Arial', sans-serif; 
+        line-height: 1.3;
+        color: #000000;
+      }
+      .document-page h2 { 
+        font-size: 14pt; 
+        font-weight: bold; 
+        margin-bottom: 8pt; 
+        margin-top: 10pt; 
+        font-family: 'Calibri', 'Arial', sans-serif;
+        color: #000000;
+      }
+      .document-page h3 { 
+        font-size: 12pt; 
+        font-weight: bold; 
+        margin-bottom: 6pt; 
+        margin-top: 8pt;
+        color: #000000;
+      }
+      
+      .document-page h4 {
+        font-size: 11pt;
+        font-weight: bold;
+        margin-bottom: 6pt;
+        margin-top: 8pt;
+        color: #000000;
+      }
+      
+      /* Override first element margin */
+      .document-page > *:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      
+      /* Mapped Styles from DocService */
+      .document-page .doc-title { 
+        text-align: center; 
+        font-size: 18pt; 
+        font-weight: bold;
+        margin-top: 0; 
+        margin-bottom: 12pt; 
+        line-height: 1.2;
+        color: #000000;
+      }
+      .document-page .doc-subtitle { 
+        text-align: center; 
+        color: #666666; 
+        font-size: 14pt; 
+        margin-bottom: 18pt; 
+        font-style: italic;
+      }
+      
+      /* Lists - Word-like styling */
+      .document-page ul { 
+        list-style-type: disc; 
+        padding-left: 40pt; 
+        margin-bottom: 10pt;
+        margin-top: 0;
+      }
+      .document-page ol { 
+        list-style-type: decimal; 
+        padding-left: 40pt; 
+        margin-bottom: 10pt;
+        margin-top: 0;
+      }
+      .document-page li {
+        margin-bottom: 4pt;
+        line-height: 1.5;
+      }
+      
+      /* Tables - Word-like styling */
+      .document-page table { 
+        border-collapse: collapse; 
+        width: 100%; 
+        margin-bottom: 10pt; 
+        margin-top: 10pt;
+        table-layout: auto;
+        font-size: 11pt;
+      }
+      .document-page td, .document-page th { 
+        border: 1px solid #000000; 
+        padding: 4pt 8pt; 
+        vertical-align: top; 
+        word-wrap: break-word;
+        line-height: 1.3;
+      }
+      .document-page th {
+        font-weight: bold;
+        background-color: #f5f5f4;
+      }
+      
+      /* Image Handling - Resizable */
+      .document-page img { 
+        max-width: 100%; 
+        height: auto; 
+        display: inline-block; 
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.2s;
+      }
+      
+      .document-page img:hover {
+        border-color: #3b82f6;
+      }
+      
+      .document-page img.selected {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      
+      /* Image alignment wrappers */
+      .document-page div[style*="text-align"] img {
+        display: inline-block;
+        margin: 12pt 0;
+      }
+      
+      /* Image resize overlay */
+      .image-resize-overlay {
+        position: absolute;
+        border: 2px solid #2563eb;
+        box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.1);
+        pointer-events: none;
+        z-index: 1000;
+      }
+      
+      .resize-handle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #2563eb;
+        border: 2px solid white;
+        border-radius: 50%;
+        pointer-events: all !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+      
+      .resize-handle:hover {
+        background: #1d4ed8;
+        transform: scale(1.2);
+      }
+      
+      /* Text formatting */
+      .document-page strong, .document-page b {
+        font-weight: bold;
+      }
+      
+      .document-page em, .document-page i {
+        font-style: italic;
+      }
+      
+      .document-page u {
+        text-decoration: underline;
+      }
+      
+      /* Ensure content doesn't overflow page width */
+      .document-page * {
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      /* Preserve inline font styles */
+      .document-page [style*="font-family"] {
+        /* Keep inline font-family */
+      }
+      
+      .document-page [style*="color"] {
+        /* Keep inline color */
+      }
+      
+      .document-page [style*="font-size"] {
+        /* Keep inline font-size */
+      }
+      
+      .document-page [style*="background-color"] {
+        /* Keep inline background-color */
+      }
+      
+      /* Support common Word fonts */
+      .document-page {
+        font-feature-settings: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Page Break Markers - hidden in content but visible between pages */
+      .page-break-marker,
+      .word-page-break {
+        display: none !important;
+      }
+      
+      /* Visual page separator in editor */
+      .document-page {
+        margin-bottom: 30px;
+        position: relative;
+        border: 1px solid #e5e7eb;
+      }
+      
+      /* Page break indicator */
+      .document-page::after {
+        content: 'Page ' attr(data-page-number);
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #f3f4f6;
+        color: #6b7280;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        pointer-events: none;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      
+      /* Dashed line showing page break */
+      .document-page::before {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: -50px;
+        right: -50px;
+        height: 1px;
+        background: repeating-linear-gradient(
+          to right,
+          #d1d5db 0px,
+          #d1d5db 8px,
+          transparent 8px,
+          transparent 16px
+        );
+        pointer-events: none;
+      }
+
+      /* Print Optimization */
+      @media print {
+        body { background: white; }
+        #root > * { display: none; } /* Hide app shell */
+        /* Just show the pages */
+      }
+
+      /* Prevent PDF Splitting Elements */
+      p, h1, h2, h3, li, img, table, tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "pdf-lib": "https://aistudiocdn.com/pdf-lib@^1.17.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-stone-100 text-stone-900 antialiased">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

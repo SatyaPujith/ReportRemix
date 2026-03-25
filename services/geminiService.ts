@@ -1,7 +1,7 @@
 
 // Version: 2.0 - Smart Merge System
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
 export interface AiResponse {
   type: 'update' | 'message';
